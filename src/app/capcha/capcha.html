@@ -1,0 +1,97 @@
+<section class="capcha-shell" aria-labelledby="capcha-title">
+  <header class="capcha-header">
+    <div class="capcha-badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M12 3 5 6v5.2c0 4.4 2.8 8.3 7 9.8 4.2-1.5 7-5.4 7-9.8V6l-7-3Z"></path>
+        <path d="m9 12 2 2 4-5"></path>
+      </svg>
+    </div>
+    <h1 id="capcha-title">Captcha Verification</h1>
+  </header>
+
+  <div class="capcha-body">
+    <div class="capcha-canvas-frame">
+      <canvas
+        #captchaCanvas
+        class="capcha-canvas"
+        width="456"
+        height="149"
+        aria-hidden="true">
+      </canvas>
+    </div>
+
+    <label class="capcha-label" for="capcha-input">Captcha Code</label>
+
+    <div class="capcha-entry-row">
+      <input
+        id="capcha-input"
+        class="capcha-input"
+        type="text"
+        inputmode="text"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        maxlength="6"
+        placeholder="Enter Captcha"
+        [value]="captchaInput()"
+        (input)="onCaptchaInput($event)"
+        (paste)="onCaptchaPaste($event)"
+        aria-describedby="capcha-status"
+      >
+
+      <button
+        class="capcha-verify"
+        type="button"
+        (click)="verifyCaptcha()"
+        aria-label="Verify CAPTCHA">
+        Verify
+      </button>
+    </div>
+
+    <div class="capcha-footer">
+      <p class="capcha-countdown">
+        Expires in: <strong>{{ secondsRemaining() }}s</strong>
+      </p>
+
+      <button
+        class="capcha-refresh"
+        type="button"
+        (click)="refreshCaptcha()"
+        aria-label="Refresh CAPTCHA">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20 12a8 8 0 1 1-2.34-5.66"></path>
+          <path d="M20 4v5h-5"></path>
+        </svg>
+        <span>Refresh</span>
+      </button>
+
+      <div
+        id="capcha-status"
+        class="capcha-status"
+        aria-live="polite">
+        @if (validationMessage()) {
+          <button
+            class="capcha-result-button"
+            [class.capcha-result-success]="validationState() === 'success'"
+            [class.capcha-result-error]="validationState() === 'error'"
+            type="button"
+            disabled>
+            <span class="capcha-result-icon" aria-hidden="true">
+              @if (validationState() === 'success') {
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="m5 12 4 4 10-10"></path>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="m6 6 12 12"></path>
+                  <path d="m18 6-12 12"></path>
+                </svg>
+              }
+            </span>
+            <span>{{ validationMessage() }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</section>
